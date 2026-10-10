@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'glinche' => [
+        'url' => env('API_URL'),
+        'email' => env('API_EMAIL'),
+        'password' => env('API_PASSWORD')
+    ],
 ];
