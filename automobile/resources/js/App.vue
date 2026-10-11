@@ -25,9 +25,9 @@
     </header>
 
     <main class="main-container">
-        <p>Nombre de véhicules chargés : {{ liste.length }}</p>
-        <VehicleCard v-for="car in liste" :key="car.id" :vehicle="car" />
+        <div class="vehicle-grid">
+            <VehicleCard v-for="car in liste" :key="car.id" :vehicle="car" />
+        </div>
     </main>
 </template>
-
 
