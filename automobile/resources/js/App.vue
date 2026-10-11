@@ -24,6 +24,8 @@
         return [...new Set(allBrands)].sort()
     })
 
+    
+
     const filteredVehicles = computed(() => {
         if (!selectedBrand.value) {
             return liste.value
@@ -42,18 +44,19 @@
     </header>
 
     <main class="main-container">
+        <div class="filter-section">
+            <label for="brand-select" class="filter-label">Filtrer par marque : </label>
+            <select id="brand-select" v-model="selectedBrand" class="filter-select">
+                <option value="">Toutes les marques</option>
+                <option v-for="brand in brands" :key="brand" :value="brand">
+                    {{ brand }}
+                </option>
+            </select>
+        </div>
+
         <div class="vehicle-grid">
             <VehicleCard v-for="car in filteredVehicles" :key="car.id" :vehicle="car" />
         </div>
-        <div>
-            Selected: {{ selected }}
-        </div>
-        <select v-model="selectedBrand" class="filter-select">
-            <option value="">Toutes les marques</option>
-            <option v-for="brand in brands" :key="brand" :value="brand">
-        {{ brand }}
-    </option>
-</select>
     </main>
 </template>
 
