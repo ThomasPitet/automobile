@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Http\Client\Response;
 use Exception;
 
 class GlincheApiService {
@@ -24,4 +25,11 @@ class GlincheApiService {
         }
         });
     }
+
+    public function getVehicles() : array {
+        $token = $this->getToken();
+        $response = Http::withToken($token)->get(config('services.glinche.url') . '/vehicles');
+        $response->throw();
+        return $response->json();
     }
+}
