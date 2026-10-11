@@ -1,4 +1,5 @@
 <script setup>
+    import VehicleCard from './components/VehicleCard.vue'
     import { ref, onMounted } from 'vue'
     const liste = ref([])
     const isLoading = ref(true)
