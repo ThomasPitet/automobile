@@ -1,7 +1,6 @@
 <script setup>
     import VehicleCard from './components/VehicleCard.vue'
-    import { ref, onMounted } from 'vue'
-    import { reactive, computed } from 'vue'
+    import { ref, onMounted, computed } from 'vue'
     
     const liste = ref([])
     const isLoading = ref(true)
@@ -18,15 +17,19 @@
         } finally {
             isLoading.value = false
         }
+    })
 
-        const filteredVehicles = computed(() => {
-    if (!selectedBrand.value) {
-        return liste.value
-    }
-    return liste.value.filter(car => car.vehicle?.manufacturer === selectedBrand.value)
-})
+    const brands = computed(() => {
+        const allBrands = liste.value.map(car => car.vehicle?.manufacturer).filter(Boolean)
+        return [...new Set(allBrands)].sort()
+    })
 
-})
+    const filteredVehicles = computed(() => {
+        if (!selectedBrand.value) {
+            return liste.value
+        }
+            return liste.value.filter(car => car.vehicle?.manufacturer === selectedBrand.value)
+    })
 </script>
 
 
@@ -40,8 +43,17 @@
 
     <main class="main-container">
         <div class="vehicle-grid">
-            <VehicleCard v-for="car in filteredVehicle" :key="car.id" :vehicle="car" />
+            <VehicleCard v-for="car in filteredVehicles" :key="car.id" :vehicle="car" />
         </div>
+        <div>
+            Selected: {{ selected }}
+        </div>
+        <select v-model="selectedBrand" class="filter-select">
+            <option value="">Toutes les marques</option>
+            <option v-for="brand in brands" :key="brand" :value="brand">
+        {{ brand }}
+    </option>
+</select>
     </main>
 </template>
 
