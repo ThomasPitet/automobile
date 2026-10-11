@@ -26,6 +26,7 @@
 
     <main class="main-container">
         <p>Nombre de véhicules chargés : {{ liste.length }}</p>
+        <VehicleCard v-for="car in liste" :key="car.id" :vehicle="car" />
     </main>
 </template>
 
