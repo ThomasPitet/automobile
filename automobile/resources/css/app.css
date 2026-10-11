@@ -7,3 +7,22 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+.navbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.navbar-title {
+    color: #1961ac;
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+.navbar-container,
+.main-container {
+    max-width: 1152;
+    margin: 0 auto;
+    padding: 1rem;
+}
