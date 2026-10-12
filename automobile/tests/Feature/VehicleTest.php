@@ -19,3 +19,34 @@ class VehicleTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Glinche Automobiles - Catalogue');
     }
+
+    public function testApiVehiclesList(): void
+    {
+        $fakeVehicles = [
+            [
+                'reference' => 'GLI12345',
+                'vehicle' => [
+                    'manufacturer' => 'Peugeot',
+                    'model' => '208',
+                    'finish' => 'Active',
+                    'prices' => ['merchantPrice' => '15000'],
+                    'mileage' => 12000,
+                    'year' => 2021,
+                    'energy' => 'ES',
+                ],
+                'pictures' => [
+                    ['url' => 'https://example.com/car.jpg']
+                ],
+            ]
+        ];
+
+        Http::fake([
+            '*/login' => Http::response(['token' => 'fake-jwt-token'], 200),
+            '*/vehicles' => Http::response($fakeVehicles, 200),
+        ]);
+
+        $response = $this->getJson('/api/vehicles');
+
+        $response->assertStatus(200)
+            ->assertJson($fakeVehicles);
+    }
