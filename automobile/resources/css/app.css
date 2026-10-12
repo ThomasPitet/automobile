@@ -106,3 +106,14 @@
 .filter-select:focus {
     border-color: #1961ac;
 }
+
+.state-message {
+    text-align: center;
+    padding: 3rem 1rem;
+    font-size: 1.1rem;
+    color: #64748b;
+}
+
+.state-message.error {
+    color: #ef4444;
+}
