@@ -5,6 +5,7 @@ const fuelLabels = {
     ES: 'Essence',
     EH: 'Hybride',
     EL: 'Électrique',
+
 }
 </script>
 
