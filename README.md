@@ -8,15 +8,15 @@ Application web développée avec Laravel (backend) et Vue.js 3 (frontend), perm
 
 1. [Prérequis](#prérequis)
 2. [Installation du projet](#installation-du-projet)
-3. [Configuration des variables d'environnement](#configuration-des-variables-denvironnement)
-4. [Lancement de l'application](#lancement-de-lapplication)
+3. [Configuration des variables d&#39;environnement](#configuration-des-variables-denvironnement)
+4. [Lancement de l&#39;application](#lancement-de-lapplication)
    - [1. Lancer le backend (Laravel)](#1-lancer-le-backend-laravel)
    - [2. Lancer le frontend (Vue.js / Vite)](#2-lancer-le-frontend-vuejs--vite)
 5. [Choix techniques effectués](#choix-techniques-effectués)
    - [Architecture Backend (Laravel)](#architecture-backend-laravel)
    - [Architecture Frontend (Vue.js 3)](#architecture-frontend-vuejs-3)
-   - [Design & CSS](#design--css)
-6. [Difficultés rencontrées & Solutions](#difficultés-rencontrées--solutions)
+   - [Design &amp; CSS](#design--css)
+6. [Difficultés rencontrées &amp; Solutions](#difficultés-rencontrées--solutions)
 
 ---
 
@@ -77,8 +77,8 @@ php artisan key:generate
 
 ```env
 API_URL="https://marketplace-dev.glinche-automobiles.com/api/partners"
-API_EMAIL="recrutement@glinche-automobiles.com"
-API_PASSWORD="*E0R2QKpf6x!"
+API_EMAIL="votre-email@exemple.com"
+API_PASSWORD="votre-mot-de-passe"
 ```
 
 > Sécurité : le mot de passe contient des caractères spéciaux (`*`, `!`). Il est impératif de l'entourer de guillemets pour éviter toute erreur de syntaxe lors du parsing de l'environnement.
@@ -97,7 +97,7 @@ Dans le premier terminal :
 php artisan serve
 ```
 
-Le serveur backend démarre par défaut sur : `http://127.0.0.1:8000`  
+Le serveur backend démarre par défaut sur : `http://127.0.0.1:8000`
 L'API locale est accessible sur : `http://127.0.0.1:8000/api/vehicles`
 
 ### 2. Lancer le frontend (Vue.js / Vite)
@@ -146,13 +146,13 @@ Ouvrez votre navigateur web et rendez-vous sur :
 
 ## Difficultés rencontrées & Solutions
 
-| Difficulté rencontrée | Solution apportée |
-| :--- | :--- |
-| Données de l'API imbriquées | Les infos du véhicule sont dans un sous-objet `vehicle`. Résolu en ciblant `vehicle.vehicle`. |
-| Codes carburant abrégés (`GO`, `ES`...) | Utilisation d'un dictionnaire pour afficher le nom complet (Gazole, Essence...). |
-| Données nulles ou sans photo | Utilisation de `??` ("Année non renseignée") et visuel de secours avec `v-if` / `v-else`. |
-| Formatage du prix | Prix reçu en texte brut. Converti avec `Number()` et formaté avec `.toLocaleString('fr-FR')`. |
-| Casse sous Windows (`app.vue` / `App.vue`) | Conflit de casse dans l'éditeur. Résolu en harmonisant le nom en `App.vue`. |
+| Difficulté rencontrée                        | Solution apportée                                                                                 |
+| :--------------------------------------------- | :------------------------------------------------------------------------------------------------- |
+| Données de l'API imbriquées                  | Les infos du véhicule sont dans un sous-objet`vehicle`. Résolu en ciblant `vehicle.vehicle`. |
+| Codes carburant abrégés (`GO`, `ES`...)  | Utilisation d'un dictionnaire pour afficher le nom complet (Gazole, Essence...).                   |
+| Données nulles ou sans photo                  | Utilisation de`??` ("Année non renseignée") et visuel de secours avec `v-if` / `v-else`.   |
+| Formatage du prix                              | Prix reçu en texte brut. Converti avec`Number()` et formaté avec `.toLocaleString('fr-FR')`. |
+| Casse sous Windows (`app.vue` / `App.vue`) | Conflit de casse dans l'éditeur. Résolu en harmonisant le nom en`App.vue`.                     |
 
 ---
 
@@ -166,4 +166,3 @@ Il a été conçu pour mettre en avant :
 - le filtrage dynamique côté client,
 - une interface claire et responsive,
 - une architecture simple et maintenable.
-
