@@ -55,7 +55,7 @@
         </div>
 
         <div class="vehicle-grid">
-            <VehicleCard v-for="car in filteredVehicles" :key="car.id" :vehicle="car" />
+            <VehicleCard v-for="car in filteredVehicles" :key="car.reference" :vehicle="car" />
         </div>
     </main>
 </template>
