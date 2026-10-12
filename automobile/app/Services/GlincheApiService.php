@@ -10,7 +10,7 @@ use Exception;
 class GlincheApiService {
     public function getToken(): string {
         
-        return Cache::remember('glinche_token', now()->addHour(1), function() {
+        return Cache::remember('glinche_token', now()->addHour(10), function() {
         
         $response = Http::post(config('services.glinche.url') . '/login', [
             'email' => config('services.glinche.email'),
