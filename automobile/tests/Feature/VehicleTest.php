@@ -50,3 +50,18 @@ class VehicleTest extends TestCase
         $response->assertStatus(200)
             ->assertJson($fakeVehicles);
     }
+    
+    public function testToken(): void
+    {
+        Http::fake([
+            '*/login' => Http::response(['token' => 'cached-test-token'], 200),
+            '*/vehicles' => Http::response([], 200),
+        ]);
+
+        $this->getJson('/api/vehicles')->assertStatus(200);
+        $this->getJson('/api/vehicles')->assertStatus(200);
+        
+        Http::assertSent(function ($request) {
+            return str_contains($request->url(), '/login');
+        }, 1);
+    }
