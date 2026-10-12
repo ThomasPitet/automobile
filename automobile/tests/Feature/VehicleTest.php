@@ -60,8 +60,23 @@ class VehicleTest extends TestCase
 
         $this->getJson('/api/vehicles')->assertStatus(200);
         $this->getJson('/api/vehicles')->assertStatus(200);
-        
+
         Http::assertSent(function ($request) {
             return str_contains($request->url(), '/login');
         }, 1);
     }
+    
+    public function testApiVehicles500(): void
+    {
+        Http::fake([
+            '*/login' => Http::response(null, 500),
+        ]);
+
+        $response = $this->getJson('/api/vehicles');
+
+        $response->assertStatus(500)
+            ->assertJson([
+                'message' => 'Impossible de récupérer les véhicules'
+            ]);
+    }
+}
