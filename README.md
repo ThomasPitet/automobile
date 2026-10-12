@@ -24,20 +24,27 @@ Application web développée avec Laravel (backend) et Vue.js 3 (frontend), perm
 
 Assurez-vous d'avoir installé sur votre machine :
 
-- PHP 8.3 ou supérieur (recommandé 8.3 ou 8.4) avec les extensions `pdo_sqlite`, `curl`, `mbstring`, `openssl`
+- PHP 8.4.1 ou supérieur  avec les extensions `pdo_sqlite`, `curl`, `mbstring`, `openssl`
 - Composer (gestionnaire de dépendances PHP)
 - Node.js (v20+) et npm
 - Git
+
+> **Note sur la configuration PHP (Windows / Mac / Linux) :**
+> Vérifiez dans votre fichier `php.ini` que les extensions suivantes sont bien activées (décommentées, sans point-virgule `;` au début) :
+> `extension=pdo_sqlite`, `extension=curl`, `extension=mbstring`, `extension=openssl`, `extension=fileinfo`.
 
 ---
 
 ## Installation du projet
 
-### 1. Se placer dans le dossier du projet
+### 1. Cloner le dépôt et se placer dans le projet
 
 ```bash
-cd automobile
+git clone https://github.com/ThomasPitet/automobile.git
+cd automobile/automobile
 ```
+
+*(Si vous avez déjà ouvert le dossier racine du dépôt dans votre éditeur, placez-vous simplement dans le dossier `automobile` avec `cd automobile`).*
 
 ### 2. Installer les dépendances PHP (Backend)
 
@@ -57,6 +64,8 @@ npm install
 
 1. À la racine du dossier `automobile/`, créez votre fichier `.env` en copiant le fichier d'exemple :
 
+Sous Linux / macOS / Git Bash :
+
 ```bash
 cp .env.example .env
 ```
@@ -75,29 +84,33 @@ php artisan key:generate
 
 3. Initialisez la base de données SQLite et exécutez les migrations :
 
-Sous Linux / macOS :
-```bash
-touch database/database.sqlite
-php artisan migrate
-```
+- Sous Linux / macOS :
+  ```bash
+  touch database/database.sqlite
+  php artisan migrate
+  ```
+- Sous Windows PowerShell :
+  ```powershell
+  New-Item -ItemType File database/database.sqlite -Force
+  php artisan migrate
+  ```
+- Sous Windows CMD (Invite de commandes) :
+  ```cmd
+  type nul > database\database.sqlite
+  php artisan migrate
+  ```
 
-Sous Windows PowerShell :
-```powershell
-New-Item -ItemType File database/database.sqlite -Force
-php artisan migrate
-```
-
-> **Important :** Cette étape est indispensable car le cache applicatif (`CACHE_STORE=database`) et les sessions s'appuient sur les tables créées par les migrations.
+> **Important :** Cette étape est indispensable car le cache applicatif (`CACHE_STORE=database`) et les sessions utilisent la base de données SQLite.
 
 4. Renseignez les identifiants de l'API Partenaires Glinche à la fin du fichier `.env` :
 
 ```env
 API_URL="https://marketplace-dev.glinche-automobiles.com/api/partners"
-API_EMAIL="votre-email@exemple.com"
-API_PASSWORD="votre-mot-de-passe"
+API_EMAIL="VOTRE_EMAIL"
+API_PASSWORD="VOTRE_PASSWORD"
 ```
 
-> Sécurité : le mot de passe contient des caractères spéciaux (`*`, `!`). Il est impératif de l'entourer de guillemets pour éviter toute erreur de syntaxe lors du parsing de l'environnement.
+> **Sécurité :** Le mot de passe contient des caractères spéciaux (`*`, `!`). Il est impératif de l'entourer de guillemets pour éviter toute erreur de syntaxe lors du parsing de l'environnement.
 
 ---
 
@@ -162,13 +175,15 @@ Ouvrez votre navigateur web et rendez-vous sur :
 
 ## Difficultés rencontrées & Solutions
 
-| Difficulté rencontrée                        | Solution apportée                                                                                 |
-| :--------------------------------------------- | :------------------------------------------------------------------------------------------------- |
-| Données de l'API imbriquées                  | Les infos du véhicule sont dans un sous-objet`vehicle`. Résolu en ciblant `vehicle.vehicle`. |
-| Codes carburant abrégés (`GO`, `ES`...)  | Utilisation d'un dictionnaire pour afficher le nom complet (Gazole, Essence...).                   |
-| Données nulles ou sans photo                  | Utilisation de`??` ("Année non renseignée") et visuel de secours avec `v-if` / `v-else`.   |
-| Formatage du prix                              | Prix reçu en texte brut. Converti avec`Number()` et formaté avec `.toLocaleString('fr-FR')`. |
-| Casse sous Windows (`app.vue` / `App.vue`) | Conflit de casse dans l'éditeur. Résolu en harmonisant le nom en`App.vue`.                     |
+| Difficulté rencontrée                       | Solution apportée                                                                                     |
+| :-------------------------------------------- | :----------------------------------------------------------------------------------------------------- |
+| Données de l'API imbriquées                 | Les infos du véhicule sont dans un sous-objet`vehicle`. Résolu en ciblant `vehicle.vehicle`.     |
+| Codes carburant abrégés (`GO`, `ES`...) | Utilisation d'un dictionnaire pour afficher le nom complet (Gazole, Essence...).                       |
+| Données nulles ou sans photo                 | Utilisation de`??` ("Année non renseignée") et visuel de secours avec `v-if` / `v-else`.       |
+| Formatage du prix                             | Prix reçu en texte brut. Converti avec`Number()` et formaté avec `.toLocaleString('fr-FR')`.     |
+| Erreur SSL cURL sous Windows (`cURL 60`)    | Télécharger`cacert.pem` et renseigner `curl.cainfo` / `openssl.cafile` dans `php.ini`.       |
+| Expiration du token API distant (401)         | Renouvellement automatique du token dans`GlincheApiService` et commande `php artisan cache:clear`. |
+| Blocage des scripts sous PowerShell           | Utiliser`npm.cmd run dev` pour contourner la restriction d'exécution de scripts PowerShell.         |
 
 ---
 

@@ -29,6 +29,13 @@ class GlincheApiService {
     public function getVehicles() : array {
         $token = $this->getToken();
         $response = Http::withToken($token)->get(config('services.glinche.url') . '/vehicles');
+
+        if ($response->status() === 401) {
+            Cache::forget('glinche_token');
+            $token = $this->getToken();
+            $response = Http::withToken($token)->get(config('services.glinche.url') . '/vehicles');
+        }
+
         $response->throw();
         return $response->json();
     }

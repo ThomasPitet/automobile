@@ -29,6 +29,10 @@ Assurez-vous d'avoir installé sur votre machine :
 * **Node.js** (v20+) et **npm**
 * **Git**
 
+> **Note sur la configuration PHP (Windows / Mac / Linux) :**  
+> Vérifiez dans votre fichier `php.ini` que les extensions suivantes sont bien activées (décommentées, sans point-virgule `;` au début) :  
+> `extension=pdo_sqlite`, `extension=curl`, `extension=mbstring`, `extension=openssl`, `extension=fileinfo`.
+
 ---
 
 ## Installation du projet
@@ -38,6 +42,8 @@ Assurez-vous d'avoir installé sur votre machine :
 ```bash
 cd automobile
 ```
+
+*(Si vous venez de cloner le dépôt complet, faites `cd automobile/automobile`).*
 
 ### 2. Installer les dépendances PHP (Backend)
 
@@ -57,9 +63,14 @@ npm install
 
 1. À la racine du dossier `automobile/`, créez votre fichier `.env` en copiant le fichier d'exemple :
 
-   ```bash
-   cp .env.example .env
-   ```
+   - Sous Linux / macOS / Git Bash :
+     ```bash
+     cp .env.example .env
+     ```
+   - Sous Windows PowerShell :
+     ```powershell
+     copy .env.example .env
+     ```
 
 2. Générez la clé d'application Laravel :
 
@@ -69,17 +80,21 @@ npm install
 
 3. Initialisez la base de données SQLite et exécutez les migrations :
 
-   Sous Linux / macOS :
-   ```bash
-   touch database/database.sqlite
-   php artisan migrate
-   ```
-
-   Sous Windows PowerShell :
-   ```powershell
-   New-Item -ItemType File database/database.sqlite -Force
-   php artisan migrate
-   ```
+   - Sous Linux / macOS :
+     ```bash
+     touch database/database.sqlite
+     php artisan migrate
+     ```
+   - Sous Windows PowerShell :
+     ```powershell
+     New-Item -ItemType File database/database.sqlite -Force
+     php artisan migrate
+     ```
+   - Sous Windows CMD (Invite de commandes) :
+     ```cmd
+     type nul > database\database.sqlite
+     php artisan migrate
+     ```
 
    > **Important :** Cette étape est indispensable car le cache applicatif (`CACHE_STORE=database`) et les sessions s'appuient sur les tables créées par les migrations.
 
@@ -153,8 +168,10 @@ Ouvrez votre navigateur web et rendez-vous sur :
 
 | Difficulté rencontrée                                  | Solution apportée                                                                                    |
 | :------------------------------------------------------- | :---------------------------------------------------------------------------------------------------- |
-| **Données de l'API imbriquées**                  | Les infos du véhicule sont dans un sous-objet`vehicle`. Résolu en ciblant `vehicle.vehicle`.    |
+| **Données de l'API imbriquées**                  | Les infos du véhicule sont dans un sous-objet `vehicle`. Résolu en ciblant `vehicle.vehicle`.    |
 | **Codes carburant abrégés (`GO`, `ES`...)**  | Utilisation d'un dictionnaire pour afficher le nom complet (*Gazole*, *Essence*...).              |
-| **Données nulles ou sans photo**                  | Utilisation de`??` (*"Année non renseignée"*) et visuel de secours avec `v-if` / `v-else`.  |
-| **Formatage du prix**                              | Prix reçu en texte brut. Converti avec`Number()` et formaté avec `.toLocaleString('fr-FR')`.    |
-| **Casse sous Windows (`app.vue` / `App.vue`)** | Conflit de casse dans l'éditeur. Résolu en fermant l'onglet et en harmonisant le nom en`App.vue`. |
+| **Données nulles ou sans photo**                  | Utilisation de `??` (*"Année non renseignée"*) et visuel de secours avec `v-if` / `v-else`.  |
+| **Formatage du prix**                              | Prix reçu en texte brut. Converti avec `Number()` et formaté avec `.toLocaleString('fr-FR')`.    |
+| **Erreur SSL cURL sous Windows (`cURL 60`)**       | Télécharger `cacert.pem` et renseigner `curl.cainfo` et `openssl.cafile` dans le `php.ini`.       |
+| **Expiration du token API distant (401)**         | Renouvellement automatique du token dans `GlincheApiService` et commande `php artisan cache:clear`.|
+| **Blocage des scripts sous PowerShell**            | Utiliser `npm.cmd run dev` pour contourner la restriction d'exécution de scripts PowerShell.       |
