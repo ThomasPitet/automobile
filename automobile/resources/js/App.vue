@@ -61,8 +61,16 @@
             </select>
         </div>
 
-        <div class="vehicle-grid">
-            <VehicleCard v-for="car in filteredVehicles" :key="car.reference" :vehicle="car" />
+        <div v-if="isLoading" class="state-message">
+            Chargement des véhicules
+        </div>
+
+        <div v-else-if="error" class="state-message error">
+            {{ error }}
+        </div>
+
+        <div v-else-if="filteredVehicles.length === 0" class="state-message">
+            Aucun véhicule ne correspond à cette marque.
         </div>
     </main>
 </template>
