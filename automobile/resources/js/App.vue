@@ -8,16 +8,23 @@
     const selectedBrand = ref('')
     
     onMounted(async () => {
-        try {
-            const response = await fetch('/api/vehicles')
-            const data = await response.json()
-            liste.value = data
-        } catch (err) {
-            error.value = "Erreur lors de la récupération des véhicules"
-        } finally {
-            isLoading.value = false
+    try {
+        const response = await fetch('/api/vehicles')
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP : ${response.status}`)
         }
-    })
+        const data = await response.json()
+        if (!Array.isArray(data)) {
+            throw new Error('Format de réponse invalide')
+        }
+        liste.value = data
+    } catch (err) {
+        error.value = err.message || "Erreur lors de la récupération des véhicules"
+    } finally {
+        isLoading.value = false
+    }
+})
+
 
     const brands = computed(() => {
         const allBrands = liste.value.map(car => car.vehicle?.manufacturer).filter(Boolean)
