@@ -24,9 +24,9 @@ Application web développée avec **Laravel** (Backend) et **Vue.js 3** (Fronten
 
 Assurez-vous d'avoir installé sur votre machine :
 
-* **PHP** 8.2 ou supérieur
+* **PHP** 8.3 ou supérieur (recommandé 8.3 ou 8.4) avec les extensions `pdo_sqlite`, `curl`, `mbstring`, `openssl`
 * **Composer** (gestionnaire de dépendances PHP)
-* **Node.js** (v18+) et **npm**
+* **Node.js** (v20+) et **npm**
 * **Git**
 
 ---
@@ -61,13 +61,29 @@ npm install
    cp .env.example .env
    ```
 
-   *(Sous Windows PowerShell : `copy .env.example .env`)*
 2. Générez la clé d'application Laravel :
 
    ```bash
    php artisan key:generate
    ```
-3. Renseignez les identifiants de l'API Partenaires Glinche à la fin du fichier `.env` :
+
+3. Initialisez la base de données SQLite et exécutez les migrations :
+
+   Sous Linux / macOS :
+   ```bash
+   touch database/database.sqlite
+   php artisan migrate
+   ```
+
+   Sous Windows PowerShell :
+   ```powershell
+   New-Item -ItemType File database/database.sqlite -Force
+   php artisan migrate
+   ```
+
+   > **Important :** Cette étape est indispensable car le cache applicatif (`CACHE_STORE=database`) et les sessions s'appuient sur les tables créées par les migrations.
+
+4. Renseignez les identifiants de l'API Partenaires Glinche à la fin du fichier `.env` :
 
    ```env
    API_URL="https://marketplace-dev.glinche-automobiles.com/api/partners"
